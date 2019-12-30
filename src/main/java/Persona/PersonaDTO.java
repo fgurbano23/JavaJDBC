@@ -1,7 +1,9 @@
 package Persona;
 
-/*ESTO VENDRIA A SER UN DTO (ES PRACTICAMENTE UN JAVABEAN)*/
+/*ESTO VENDRIA A SER UN DTO (ES PRACTICAMENTE UN JAVABEAN) */
 /*CLASE QUE TRANSFIERE INFORMACION ENTRE DIFERENTES CAPAS*/
+
+import java.util.Objects;
 
 public class PersonaDTO {
     public String name;
@@ -66,5 +68,22 @@ public class PersonaDTO {
                 ", age=" + age +
                 ", dni=" + dni +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonaDTO that = (PersonaDTO) o;
+        return age == that.age &&
+                dni == that.dni &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(direction, that.direction);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, email, direction, age, dni);
     }
 }
