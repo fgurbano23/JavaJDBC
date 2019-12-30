@@ -1,13 +1,16 @@
 package Persona;
 
-public class Persona {
+/*ESTO VENDRIA A SER UN DTO (ES PRACTICAMENTE UN JAVABEAN)*/
+/*CLASE QUE TRANSFIERE INFORMACION ENTRE DIFERENTES CAPAS*/
+
+public class PersonaDTO {
     public String name;
     public String email;
     public String direction;
     public int age;
     public int dni;
 
-    public Persona(String name, String email, String direction, int age) {
+    public PersonaDTO(String name, String email, String direction, int age) {
         this.name = name;
         this.email = email;
         this.direction = direction;

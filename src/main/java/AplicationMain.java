@@ -1,5 +1,6 @@
-import Persona.Persona;
-import Persona.PersonaJDBC;
+import Persona.PersonaDTO;
+import jdbc.PersonaDAO;
+import jdbc.PersonaDAO_JDBC;
 import jdbc.ConnectionDB;
 
 import java.sql.Connection;
@@ -21,20 +22,26 @@ public class AplicationMain {
             if(connection.getAutoCommit()) {
                 connection.setAutoCommit(false);
             }
-            PersonaJDBC personaJDBC = new PersonaJDBC(connection);
-            List<Persona> personas = null;
+
+            /*SE USA LA INTERFAZ PersonaDAO PORQUE DEBE SER SIEMPRE LO MAS GENERICO POSIBLE */
+            /*LA CLASE QUE LO IMPLEMENTA DEBE SER TRANSPARENTE AL MOMENTO DEL USO*/
+            PersonaDAO personaDAOJDBC = new PersonaDAO_JDBC(connection);
+            List<PersonaDTO> personas = null;
 
             /*SELECT*/
-            personas = personaJDBC.getPersonas();
-            for(Persona it: personas){
+            personas = personaDAOJDBC.select();
+            for(PersonaDTO it: personas){
                 System.out.println(it.toString());
             }
 
             /*INSERT*/
-            Persona p = new Persona("juan","gmail","calle1",21);
-            personaJDBC.insert(p);
+            PersonaDTO p = new PersonaDTO("juan","gmail","calle1",21);
+            personaDAOJDBC.insert(p);
 
             /*HACEMOS COMMIT PARA GUARDAR EFECTIVAMENTE LOS CAMBIOS EN LA BD*/
+            /*IMPORTANTE RECORDAR QUE LOS COMMIT UNICAMENTE APLICAN PARA AQUELLAS TRANSACCIONES QUE
+            * MODIFIQUEN EL ESTADO LA BASE DE DATOS (UPDATE,INSERT,DELETE) LOS SELECT NO AFECTAN EL ESTADO DE LA BD
+            * */
             connection.commit();
             System.out.println("TRANSACCION EXITOSA");
 

@@ -1,5 +1,6 @@
-package Persona;
+package jdbc;
 
+import Persona.PersonaDTO;
 import jdbc.ConnectionDB;
 
 import java.sql.Connection;
@@ -9,31 +10,35 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PersonaJDBC {
+/*ESTO VENDRIA A SER LA IMPLEMENTACION DEL DAO A TRAVÉS DE JDBC*/
+/*DEFINE LOS ACCESOS A LA BASES DE DATOS*/
+
+public class PersonaDAO_JDBC implements PersonaDAO{
+
     public Connection connectionTransaccional;
 
     public static final String SQL_SELECT = "SELECT * FROM PERSON";
     public static final String SQL_INSERT = "INSERT INTO PERSON(NOMBRE,EMAIL,DIRECCION,EDAD) VALUES(?,?,?,?)";
 
-    public PersonaJDBC(){
+    public PersonaDAO_JDBC(){
 
     }
 
-    public PersonaJDBC(Connection conexion){
+    public PersonaDAO_JDBC(Connection conexion){
         this.connectionTransaccional = conexion;
     }
 
-    public List<Persona> getPersonas() throws SQLException {
+    public List<PersonaDTO> select() throws SQLException {
         Connection connection = (this.connectionTransaccional != null ) ? this.connectionTransaccional : ConnectionDB.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
-        List<Persona> response = new ArrayList<Persona>();
+        List<PersonaDTO> response = new ArrayList<PersonaDTO>();
         try {
             connection = ConnectionDB.getConnection();
             preparedStatement =connection.prepareStatement(SQL_SELECT);
             rs = preparedStatement.executeQuery();
             while (rs.next()){
-                Persona persona = new Persona(
+                PersonaDTO persona = new PersonaDTO(
                    rs.getString("NOMBRE"),
                    rs.getString("EMAIL"),
                    rs.getString("EMAIL"),
@@ -53,7 +58,7 @@ public class PersonaJDBC {
     }
 
 
-    public int insert(Persona persona) throws SQLException{
+    public int insert(PersonaDTO persona) throws SQLException{
         Connection connection= null;
         PreparedStatement preparedStatement = null;
         int response = 0;
