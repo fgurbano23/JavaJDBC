@@ -5,7 +5,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import javax.sql.DataSource;
 import java.sql.*;
 
-/*MANEJA Y CREA EL POOL DE CONEXIONES */
+/*MANEJA Y CREA EL POOL DE CONEXIONES ATRAVES DE LA LIBRERIA APACHE COMMONS*/
 
 public class ConnectionDB {
 
@@ -15,6 +15,7 @@ public class ConnectionDB {
 
     /*SE CONFIGURA EL POOL DE CONEXIONES Y LA CONEXION POR DEFAULT*/
     public static DataSource getDataSource(){
+        /*HACEMOS USO DE LA CLASE BasicDataSource DE APACHE COMMONS*/
         BasicDataSource dataSource = new BasicDataSource();
         dataSource.setUrl(JDBC_URL);
         dataSource.setUsername(JDB_USER);
