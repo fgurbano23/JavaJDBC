@@ -10,13 +10,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PersonaJDBC {
+    public Connection connectionTransaccional;
 
     public static final String SQL_SELECT = "SELECT * FROM PERSON";
     public static final String SQL_INSERT = "INSERT INTO PERSON(NOMBRE,EMAIL,DIRECCION,EDAD) VALUES(?,?,?,?)";
 
+    public PersonaJDBC(){
 
-    public static List<Persona> getPersonas() {
-        Connection connection = null;
+    }
+
+    public PersonaJDBC(Connection conexion){
+        this.connectionTransaccional = conexion;
+    }
+
+    public List<Persona> getPersonas() throws SQLException {
+        Connection connection = (this.connectionTransaccional != null ) ? this.connectionTransaccional : ConnectionDB.getConnection();
         PreparedStatement preparedStatement = null;
         ResultSet rs = null;
         List<Persona> response = new ArrayList<Persona>();
@@ -33,31 +41,36 @@ public class PersonaJDBC {
                 );
                 response.add(persona);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         } finally {
             ConnectionDB.close(rs);
             ConnectionDB.close(preparedStatement);
-            ConnectionDB.close(connection);
+            if(this.connectionTransaccional == null){
+                ConnectionDB.close(connection);
+            }
+
         }
         return response;
     }
 
 
-    public static int insert(Persona persona) {
+    public int insert(Persona persona) throws SQLException{
         Connection connection= null;
         PreparedStatement preparedStatement = null;
         int response = 0;
         try {
-            connection = ConnectionDB.getConnection();
+            connection = (this.connectionTransaccional != null ) ? this.connectionTransaccional : ConnectionDB.getConnection();
             preparedStatement =  connection.prepareStatement(SQL_INSERT);
             preparedStatement.setString(1,persona.getName());
             preparedStatement.setString(2,persona.getEmail());
             preparedStatement.setString(3,persona.getDirection());
             preparedStatement.setInt(4,persona.getAge());
             response = preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } finally {
+            ConnectionDB.close(preparedStatement);
+            if(this.connectionTransaccional == null){
+                ConnectionDB.close(connection);
+            }
+
         }
         return response;
     }
