@@ -36,12 +36,12 @@ public class AplicationMain {
 
             /*HACEMOS COMMIT PARA GUARDAR EFECTIVAMENTE LOS CAMBIOS EN LA BD*/
             connection.commit();
-
+            System.out.println("TRANSACCION EXITOSA");
 
         } catch (SQLException e) {
             e.printStackTrace();
             try {
-                System.out.println("HACIENDO ROLLBACK");
+                System.out.println("TRANSACCION ROLLBACK");
                 connection.rollback();
             } catch (SQLException e1) {
                 e1.printStackTrace();
