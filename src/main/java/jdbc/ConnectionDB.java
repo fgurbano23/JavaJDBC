@@ -5,7 +5,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import javax.sql.DataSource;
 import java.sql.*;
 
-/*MANEJA Y CREA EL POOL DE CONEXIONES ATRAVES DE LA LIBRERIA APACHE COMMONS*/
+/*MANEJA Y CREA EL POOL DE CONEXIONES ATRAVES DE LA LIBRERIA APACHE COMMON S*/
 
 public class ConnectionDB {
 
